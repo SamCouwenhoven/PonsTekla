@@ -3,10 +3,17 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ksprofiel.ponstekla.controllers.TestController">
-   <center>
-      <Button fx:id="test" mnemonicParsing="false" text="nice button" BorderPane.alignment="CENTER" />
-   </center>
-</BorderPane>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ksprofiel.ponstekla.controllers.TestController">
+   <children>
+      <Pane fx:id="leftPane" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
+      <Pane layoutX="386.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Button layoutX="69.0" layoutY="88.0" mnemonicParsing="false" text="Button" onAction="#addButton" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

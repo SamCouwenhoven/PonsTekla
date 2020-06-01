@@ -2,8 +2,11 @@ package com.ksprofiel.ponstekla.controllers;
 
 import com.ksprofiel.ponstekla.App;
 import com.ksprofiel.ponstekla.models.ViewFile;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -23,6 +26,10 @@ public abstract class AbstractController implements Controller {
             e.printStackTrace();
         }
         return null;
+    }
+
+    protected Stage getStage(ActionEvent event){
+        return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
 
     protected <T> T getController(){
