@@ -7,13 +7,9 @@
 <?import javafx.scene.control.Button?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ksprofiel.ponstekla.controllers.TestController">
+<Pane fx:controller="com.ksprofiel.ponstekla.controllers.TestController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane fx:id="leftPane" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
-      <Pane layoutX="386.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <Button layoutX="69.0" layoutY="88.0" mnemonicParsing="false" text="Button" onAction="#addButton" />
-         </children>
-      </Pane>
+      <GridPane fx:id="gridPane" layoutX="-1.0" layoutY="1.0" prefHeight="400.0" prefWidth="600.0">
+      </GridPane>
    </children>
-</AnchorPane>
+</Pane>

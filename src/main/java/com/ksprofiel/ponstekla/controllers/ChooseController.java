@@ -98,7 +98,7 @@ public class ChooseController extends AbstractController implements Initializabl
         Scene testScene = new Scene(testViewParent);
 
         TestController testController = getController();
-        testController.initData("Super mooie message incomming");
+        testController.initData(fileList);
 
         Stage window = getStage(event);
         window.setScene(testScene);

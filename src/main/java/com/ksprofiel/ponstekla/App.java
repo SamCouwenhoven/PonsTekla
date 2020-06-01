@@ -10,6 +10,7 @@ public class App extends Application {
     public void start(Stage stage) {
         AppController controller = new AppController();
         stage.setScene(controller.getScene());
+        stage.setTitle("PonsTekla");
         stage.show();
     }
 
