@@ -24,7 +24,7 @@
          <children>
             <Button fx:id="addButton" mnemonicParsing="false" text="Toevoegen" />
             <Button fx:id="removeButton" mnemonicParsing="false" text="Verwijderen" GridPane.rowIndex="1" />
-            <Button fx:id="printButton" disable="true" mnemonicParsing="false" text="Print Tabel" GridPane.rowIndex="2" />
+            <Button fx:id="printButton" disable="false" text="Print Tabel" GridPane.rowIndex="2" onAction="#print" />
             <Button fx:id="continueButton" mnemonicParsing="false" text="Verder" GridPane.rowIndex="3" />
          </children>
       </GridPane>
