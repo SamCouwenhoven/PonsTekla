@@ -45,6 +45,7 @@ public class ChooseController extends AbstractController implements Initializabl
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("*.nc","*.nc1");
         fileChooser.getExtensionFilters().add(extFilter);
 
+
         List<File> chosenFiles = fileChooser.showOpenMultipleDialog(getStage(event));
 
         fileList.addAll(chosenFiles);
@@ -96,8 +97,8 @@ public class ChooseController extends AbstractController implements Initializabl
 
         Scene testScene = new Scene(testViewParent);
 
-        UniqueController testController = getController();
-        testController.initData(fileList);
+        UniqueController uniqueController = getController();
+        uniqueController.initData(fileList);
 
         Stage window = getStage(event);
         window.setScene(testScene);

@@ -23,6 +23,7 @@ public class FileFilter{
         for (File file : files){
 
             LinkedList<Hole> holes =  findUNr(readFile(file));
+
             for (Hole hole : holes){
                 if (!uniqueHoleList.contains(hole)){
                     uniqueHoleList.add(hole);
