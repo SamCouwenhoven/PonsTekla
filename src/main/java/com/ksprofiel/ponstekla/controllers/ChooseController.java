@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -97,7 +96,7 @@ public class ChooseController extends AbstractController implements Initializabl
 
         Scene testScene = new Scene(testViewParent);
 
-        TestController testController = getController();
+        UniqueController testController = getController();
         testController.initData(fileList);
 
         Stage window = getStage(event);

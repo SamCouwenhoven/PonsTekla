@@ -2,7 +2,7 @@ package com.ksprofiel.ponstekla.models;
 
 public enum ViewFile {
     CHOOSE("views/choose_view_v1.fxml"),
-    TEST("views/test_view.fxml");
+    TEST("views/unique_view.fxml");
 
     private final String fileName;
     ViewFile(String fileName){
