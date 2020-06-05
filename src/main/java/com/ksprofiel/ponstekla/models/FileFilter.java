@@ -1,28 +1,27 @@
 package com.ksprofiel.ponstekla.models;
 
 import javafx.collections.ObservableList;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class FileFilter{
-    private ObservableList<File> files;
+    private final static String HOLE_FILTER = "BO";
+    private final static String CONTOUR_FILTER = "AK";
+    private final static String INTERNAL_CONTOUR_FILTER = "IK";
+    private final ObservableList<File> files;
 
     public FileFilter(ObservableList<File> files){
         this.files = files;
     }
 
-    public LinkedList<Hole> calculateDiffrentHoles(){
+    public LinkedList<Hole> calculateDifferentHoles(){
         LinkedList<Hole> uniqueHoleList = new LinkedList<>();
         for (File file : files){
 
-            LinkedList<Hole> holes =  findUNr(readFile(file));
+            LinkedList<Hole> holes =  findHoleUNr(ReadFile.toList(file));
 
             for (Hole hole : holes){
                 if (!uniqueHoleList.contains(hole)){
@@ -33,25 +32,11 @@ public class FileFilter{
         return uniqueHoleList;
     }
 
-    private LinkedList<String> readFile(File file){
 
-        LinkedList<String> text = new LinkedList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))){
-            String line;
-            while ((line = bufferedReader.readLine()) != null){
-                text.add(line);
-            }
+    private LinkedList<Hole> findHoleUNr(LinkedList<String> text){
 
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        return text;
-    }
+        List<String> holeList = filterText(text,HOLE_FILTER);
 
-    private LinkedList<Hole> findUNr(LinkedList<String> text){
-        ArrayList<String> alphabets = new ArrayList<>(Arrays.asList("BO"));
-        List<String> holeList = text.subList(text.indexOf("BO") + 1,text.size() - 1);
-        holeList.removeAll(alphabets);
 
         LinkedList<Hole> uniqueHoleList = new LinkedList<>();
 
@@ -66,4 +51,27 @@ public class FileFilter{
 
         return uniqueHoleList;
     }
+
+    private LinkedList<String> filterText(LinkedList<String> text,String filter){
+        LinkedList<String> filteredList = new LinkedList<>();
+        boolean add = true;
+        for (String line : text){
+
+            if (line.length() == 2 && !line.equals(filter)){
+                add = false;
+            }else if(line.length() == 2){
+                add = true;
+            }
+
+            if (add){
+                filteredList.add(line);
+            }
+        }
+
+        ArrayList<String> alphabets = new ArrayList<>(Arrays.asList(filter));
+        filteredList.removeAll(alphabets);
+
+        return filteredList;
+    }
+
 }

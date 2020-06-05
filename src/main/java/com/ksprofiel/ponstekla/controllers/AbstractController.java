@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public abstract class AbstractController implements Controller {
+public abstract class AbstractController {
     private final FXMLLoader fxmlLoader;
 
     protected AbstractController() {

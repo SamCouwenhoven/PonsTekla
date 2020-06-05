@@ -24,7 +24,7 @@
          <children>
             <Button mnemonicParsing="false" text="Toevoegen" onAction="#addFiles"/>
             <Button mnemonicParsing="false" text="Verwijderen" GridPane.rowIndex="1" onAction="#removeSelectedFiles"/>
-            <Button disable="true" text="Print Tabel" GridPane.rowIndex="2" onAction="#print" />
+            <Button disable="true" text="Print Tabel" GridPane.rowIndex="2" />
             <Button mnemonicParsing="false" text="Verder" GridPane.rowIndex="3" onAction="#toNextView" />
          </children>
       </GridPane>

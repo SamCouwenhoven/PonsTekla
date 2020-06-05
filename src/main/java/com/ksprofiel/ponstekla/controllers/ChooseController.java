@@ -1,5 +1,6 @@
 package com.ksprofiel.ponstekla.controllers;
 
+import com.ksprofiel.ponstekla.models.ReadFile;
 import com.ksprofiel.ponstekla.models.ViewFile;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,10 +14,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -42,8 +40,11 @@ public class ChooseController extends AbstractController implements Initializabl
     private void addFiles(ActionEvent event){
 
         FileChooser fileChooser =  new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("*.nc","*.nc1");
-        fileChooser.getExtensionFilters().add(extFilter);
+
+        FileChooser.ExtensionFilter ncFilter = new FileChooser.ExtensionFilter("NC Files", "*.nc*");
+        FileChooser.ExtensionFilter allFilter = new FileChooser.ExtensionFilter("All Files", "*.*");
+        fileChooser.getExtensionFilters().add(ncFilter);
+        fileChooser.getExtensionFilters().add(allFilter);
 
 
         List<File> chosenFiles = fileChooser.showOpenMultipleDialog(getStage(event));
@@ -63,19 +64,9 @@ public class ChooseController extends AbstractController implements Initializabl
     @FXML
     private void readFile(){
         File fileToRead = fileListView.getSelectionModel().getSelectedItem();
-
         if (fileToRead == null){return;}
-
         readFileListView.getItems().clear();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileToRead))){
-            String line;
-            while ((line = bufferedReader.readLine()) != null){
-                readFileListView.getItems().add(line);
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
+        readFileListView.getItems().addAll( ReadFile.toList(fileToRead) );
     }
 
     @FXML
@@ -86,22 +77,16 @@ public class ChooseController extends AbstractController implements Initializabl
     }
 
     @FXML
-    private void print(ActionEvent event){
-
-
-    }
-
-    @FXML
     private void toNextView(ActionEvent event){
-        Parent testViewParent = loadFXML(ViewFile.TEST);
+        Parent uniqueViewParent = loadFXML(ViewFile.TEST);
 
-        Scene testScene = new Scene(testViewParent);
+        Scene uniqueScene = new Scene(uniqueViewParent);
 
         UniqueController uniqueController = getController();
         uniqueController.initData(fileList);
 
         Stage window = getStage(event);
-        window.setScene(testScene);
+        window.setScene(uniqueScene);
         window.show();
     }
 
