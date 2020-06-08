@@ -6,7 +6,7 @@ public class Hole{
     private double y;
     private double size;
 
-    public Hole(String side, double x, double y, double size){
+    protected Hole(String side, double x, double y, double size){
         this.side = side;
         this.x = x;
         this.y = round(y);
@@ -14,7 +14,7 @@ public class Hole{
     }
 
     public Hole(String[] dataLine){
-        this(dataLine[1], Double.parseDouble(dataLine[2].substring(0,dataLine[2].length()-1)), Double.parseDouble(dataLine[3]), Double.parseDouble(dataLine[4]) );
+        this(dataLine[1], Double.parseDouble(dataLine[2].replaceAll(Regex.NOT_DIGIT,"")), Double.parseDouble(dataLine[3]), Double.parseDouble(dataLine[4]) );
     }
 
     private double round(double number){
