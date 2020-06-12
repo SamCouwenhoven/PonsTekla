@@ -1,6 +1,7 @@
 package com.ksprofiel.ponstekla.models;
 
-import javafx.collections.ObservableList;
+import com.ksprofiel.ponstekla.factories.ContourFactory;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,15 @@ public class FileFilter{
         }
 
         return holeList;
+    }
+
+    public static LinkedList<Contour> findContour(File file){
+        LinkedList<String> contourTextList = filterText(ReadFile.toList(file),EXTERNAL_CONTOUR_FILTER);
+        ContourFactory contourFactory = new ContourFactory();
+        LinkedList<Contour> contourList = contourFactory.createContours(contourTextList);
+
+
+        return contourList;
     }
 
     private static LinkedList<String> filterText(LinkedList<String> text,String filter){

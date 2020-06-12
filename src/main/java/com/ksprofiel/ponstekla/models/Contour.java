@@ -2,26 +2,26 @@ package com.ksprofiel.ponstekla.models;
 
 public class Contour {
     private String side;
-    private double start;
     private double length;
     private double height;
-    private double beginning;
-    private double end;
 
-    public Contour(double beginning,double end,double height,double length,String side)
+    public Contour(double height,double length,String side)
     {
-        if (beginning < end)
-        {
-            this.beginning = beginning;
-            this.end = end;
-        }
-        else
-        {
-            this.beginning = end;
-            this.end = beginning;
-        }
-
+        this.height = height;
+        this.length = length;
         this.side = side;
+    }
+
+    public String getSide() {
+        return side;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public double getHeight() {
+        return height;
     }
 
     @Override
