@@ -7,13 +7,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 import java.util.LinkedList;
+import java.util.Set;
 
 public class UniqueViewBuilder {
     private static int column = 1;
     private static final int SIZE_GRIDPANE = 1;
     private GridPane gridPane;
-    private LinkedList<Hole> uniqueHoleList;
-    private LinkedList<Contour> uniqueContourList;
+    private Set<Hole> holeSet;
+    private Set<Contour> contourSet;
 
     public UniqueViewBuilder(GridPane gridPane){
         this.gridPane = gridPane;
@@ -22,14 +23,14 @@ public class UniqueViewBuilder {
 
     public void init(){
         createHoles();
-        createContours();
+        //createContours();
         gridPane.setHgap(20);
         gridPane.setVgap(15);
     }
     private void createHoles(){
         gridPane.add(headLabel("Holes"),column,0,SIZE_GRIDPANE,SIZE_GRIDPANE);
         column++;
-        for (Hole hole:uniqueHoleList) {
+        for (Hole hole: holeSet) {
             gridPane.add(new Label(hole.getSide()),0,column,SIZE_GRIDPANE,SIZE_GRIDPANE);
             gridPane.add(new Label(Double.toString(hole.getY())),2,column,SIZE_GRIDPANE,SIZE_GRIDPANE);
             gridPane.add(new Label(Double.toString(hole.getSize())),3,column,SIZE_GRIDPANE,SIZE_GRIDPANE);
@@ -41,7 +42,7 @@ public class UniqueViewBuilder {
     private void createContours(){
         gridPane.add(headLabel("Contours"),0,column,SIZE_GRIDPANE,SIZE_GRIDPANE);
         column++;
-        for (Contour contour:uniqueContourList) {
+        for (Contour contour: contourSet) {
             gridPane.add(new Label(contour.getSide()),0,column,SIZE_GRIDPANE,SIZE_GRIDPANE);
             gridPane.add(new Label(Double.toString(contour.getLength())),2,column,SIZE_GRIDPANE,SIZE_GRIDPANE);
             gridPane.add(new Label(Double.toString(contour.getHeight())),3,column,SIZE_GRIDPANE,SIZE_GRIDPANE);
@@ -50,12 +51,12 @@ public class UniqueViewBuilder {
         }
     }
 
-    public void setUniqueHoleList(LinkedList<Hole> uniqueHoleList) {
-        this.uniqueHoleList = uniqueHoleList;
+    public void setHoleSet(Set<Hole> holeSet) {
+        this.holeSet = holeSet;
     }
 
-    public void setUniqueContourList(LinkedList<Contour> uniqueContourList) {
-        this.uniqueContourList = uniqueContourList;
+    public void setContourSet(Set<Contour> contourSet) {
+        this.contourSet = contourSet;
     }
 
     private Label headLabel(String title){

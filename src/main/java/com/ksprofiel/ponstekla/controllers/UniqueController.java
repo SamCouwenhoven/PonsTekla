@@ -2,15 +2,15 @@ package com.ksprofiel.ponstekla.controllers;
 
 import com.ksprofiel.ponstekla.builders.UniqueViewBuilder;
 import com.ksprofiel.ponstekla.factories.ProfileFactory;
-import com.ksprofiel.ponstekla.models.Contour;
 import com.ksprofiel.ponstekla.models.Hole;
 import com.ksprofiel.ponstekla.models.Profile;
-import com.ksprofiel.ponstekla.models.Regex;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import java.io.File;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class UniqueController{
 
@@ -25,26 +25,16 @@ public class UniqueController{
     }
     private void buildUniqueView(){
         UniqueViewBuilder uniqueViewBuilder = new UniqueViewBuilder(gridPane);
-        uniqueViewBuilder.setUniqueHoleList(createUniqueHoleList());
-        uniqueViewBuilder.setUniqueContourList(createUniqueContourList());
+        uniqueViewBuilder.setHoleSet(createUniqueHoleList());
         uniqueViewBuilder.init();
     }
 
-    private LinkedList<Hole> createUniqueHoleList(){
-        LinkedList<Hole> uniqueHoleList = new LinkedList<>();
+    private Set<Hole> createUniqueHoleList(){
+        Set<Hole> holeSet = new HashSet<>();
         for (Profile profile:profiles) {
-            Regex.addUniques(profile.getHoles(),uniqueHoleList);
+            holeSet.addAll(profile.getHoles());
         }
-        return uniqueHoleList;
+        return holeSet;
     }
 
-    private LinkedList<Contour> createUniqueContourList(){
-        LinkedList<Contour> uniqueContourList = new LinkedList<>();
-
-        for (Profile profile:profiles){
-            Regex.addUniques(profile.getContourAK(),uniqueContourList);
-        }
-
-        return uniqueContourList;
-    }
 }

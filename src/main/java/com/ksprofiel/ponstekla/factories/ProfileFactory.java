@@ -22,7 +22,6 @@ public class ProfileFactory {
         Profile profile = new Profile();
         profile.setName(file.getName());
         profile.setHoles(FileFilter.findHoles(file));
-        profile.setContourAK(FileFilter.findContour(file));
 
 
         return profile;

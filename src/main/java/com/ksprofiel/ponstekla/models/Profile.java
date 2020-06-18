@@ -1,28 +1,29 @@
 package com.ksprofiel.ponstekla.models;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class Profile {
 
     private String name;
     private double length;
-    private LinkedList<Contour> contourIK;
-    private LinkedList<Contour> contourAK;
-    private LinkedList<Hole> holes;
+    private List<Contour> contourIK;
+    private List<Contour> contourAK;
+    private List<Hole> holes;
 
     public void setContourAK(LinkedList<Contour> contourAK) {
         this.contourAK = contourAK;
     }
 
-    public LinkedList<Contour> getContourAK() {
+    public List<Contour> getContourAK() {
         return contourAK;
     }
 
-    public void setHoles(LinkedList<Hole> holes) {
+    public void setHoles(List<Hole> holes) {
         this.holes = holes;
     }
 
-    public LinkedList<Hole> getHoles() {
+    public List<Hole> getHoles() {
         return holes;
     }
 
