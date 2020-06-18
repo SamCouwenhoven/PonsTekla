@@ -1,48 +1,43 @@
 package com.ksprofiel.ponstekla.models;
 
-import javafx.collections.ObservableList;
+import com.ksprofiel.ponstekla.factories.ContourFactory;
+
 import java.io.File;
-import java.util.*;
-import java.util.zip.CheckedOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 public class FileFilter{
     private final static String HOLE_FILTER = "BO";
     private final static String EXTERNAL_CONTOUR_FILTER = "AK";
     private final static String INTERNAL_CONTOUR_FILTER = "IK";
-    private final ObservableList<File> files;
 
-    public FileFilter(ObservableList<File> files){
-        this.files = files;
-    }
+    public static LinkedList<Hole> findHoles(File file){
 
-    public Set<Hole> calculateDifferentHoles(){
-        Set<Hole> holeSet = new HashSet<>();
-        for (File file : files){
+        LinkedList<String> holeTextList = filterText(ReadFile.toList(file),HOLE_FILTER);
+        LinkedList<Hole> holeList = new LinkedList<>();
 
-            holeSet.addAll( findHoleUNr(ReadFile.toList(file) ));
-
-        }
-        return holeSet;
-    }
-
-    private Set<Hole> findHoleUNr(LinkedList<String> text){
-
-        List<String> textList = filterText(text,HOLE_FILTER);
-        Set<Hole> holeSet = new HashSet<>();
-
-        for (String line : textList) {
+        for (String line : holeTextList) {
 
             String[] arrayLine = line.split(Regex.WHITESPACE);
             Hole hole = new Hole(arrayLine);
-            holeSet.add(hole);
-
+            holeList.add(hole);
         }
 
-        return holeSet;
+        return holeList;
     }
 
-    private List<String> filterText(List<String> text,String filter){
-        List<String> filteredList = new LinkedList<>();
+    public static LinkedList<Contour> findContour(File file){
+        LinkedList<String> contourTextList = filterText(ReadFile.toList(file),EXTERNAL_CONTOUR_FILTER);
+        ContourFactory contourFactory = new ContourFactory();
+        LinkedList<Contour> contourList = contourFactory.createContours(contourTextList);
+
+
+        return contourList;
+    }
+
+    private static LinkedList<String> filterText(LinkedList<String> text,String filter){
+        LinkedList<String> filteredList = new LinkedList<>();
         boolean add = true;
         for (String line : text){
 
@@ -62,5 +57,4 @@ public class FileFilter{
 
         return filteredList;
     }
-
 }
