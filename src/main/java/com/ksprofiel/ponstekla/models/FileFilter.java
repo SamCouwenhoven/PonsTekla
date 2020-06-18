@@ -2,10 +2,7 @@ package com.ksprofiel.ponstekla.models;
 
 import javafx.collections.ObservableList;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.zip.CheckedOutputStream;
 
 public class FileFilter{
@@ -18,36 +15,34 @@ public class FileFilter{
         this.files = files;
     }
 
-    public LinkedList<Hole> calculateDifferentHoles(){
-        LinkedList<Hole> uniqueHoleList = new LinkedList<>();
+    public Set<Hole> calculateDifferentHoles(){
+        Set<Hole> holeSet = new HashSet<>();
         for (File file : files){
 
-            LinkedList<Hole> holes = findHoleUNr(ReadFile.toList(file));
-            addUniques(holes,uniqueHoleList);
+            holeSet.addAll( findHoleUNr(ReadFile.toList(file) ));
 
         }
-        return uniqueHoleList;
+        return holeSet;
     }
 
-    private LinkedList<Hole> findHoleUNr(LinkedList<String> text){
+    private Set<Hole> findHoleUNr(LinkedList<String> text){
 
-        List<String> holeList = filterText(text,HOLE_FILTER);
-        LinkedList<Hole> uniqueHoleList = new LinkedList<>();
+        List<String> textList = filterText(text,HOLE_FILTER);
+        Set<Hole> holeSet = new HashSet<>();
 
-        for (String line : holeList) {
+        for (String line : textList) {
+
             String[] arrayLine = line.split(Regex.WHITESPACE);
-
             Hole hole = new Hole(arrayLine);
-            if(!uniqueHoleList.contains(hole)){
-                uniqueHoleList.add(hole);
-            }
+            holeSet.add(hole);
+
         }
 
-        return uniqueHoleList;
+        return holeSet;
     }
 
-    private LinkedList<String> filterText(LinkedList<String> text,String filter){
-        LinkedList<String> filteredList = new LinkedList<>();
+    private List<String> filterText(List<String> text,String filter){
+        List<String> filteredList = new LinkedList<>();
         boolean add = true;
         for (String line : text){
 
@@ -66,14 +61,6 @@ public class FileFilter{
         filteredList.removeAll(alphabets);
 
         return filteredList;
-    }
-
-    private <T> void addUniques(LinkedList<T> tLinkedList, LinkedList<T> uniqueTLinkedList){
-        for (T t : tLinkedList){
-            if (!uniqueTLinkedList.contains(t)){
-                uniqueTLinkedList.add(t);
-            }
-        }
     }
 
 }

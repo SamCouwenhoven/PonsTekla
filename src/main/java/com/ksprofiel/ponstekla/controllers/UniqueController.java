@@ -23,7 +23,7 @@ public class UniqueController{
     private void buildUniqueView(){
         UniqueViewBuilder uniqueViewBuilder = new UniqueViewBuilder(gridPane);
 
-        uniqueViewBuilder.setUniqueHoleList(fileFilter.calculateDifferentHoles());
+        uniqueViewBuilder.setHoleSet(fileFilter.calculateDifferentHoles());
 
         uniqueViewBuilder.init();
     }

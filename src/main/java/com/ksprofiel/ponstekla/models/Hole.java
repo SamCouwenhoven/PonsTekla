@@ -1,10 +1,12 @@
 package com.ksprofiel.ponstekla.models;
 
+import java.util.Objects;
+
 public class Hole{
-    private String side;
-    private double x;
-    private double y;
-    private double size;
+    private final String side;
+    private final double x;
+    private final double y;
+    private final double size;
 
     protected Hole(String side, double x, double y, double size){
         this.side = side;
@@ -34,6 +36,12 @@ public class Hole{
                 y == hole.y &&
                 size == hole.size;
     }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(side,y,size);
+    }
+
 
     @Override
     public String toString() {
