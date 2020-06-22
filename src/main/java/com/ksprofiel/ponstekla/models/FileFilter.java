@@ -10,6 +10,7 @@ public class FileFilter{
     private final static String HOLE_FILTER = "BO";
     private final static String EXTERNAL_CONTOUR_FILTER = "AK";
     private final static String INTERNAL_CONTOUR_FILTER = "IK";
+    private final static String INFO_FILTER = "ST";
 
     public static List<Hole> findHoles(File file){
 
@@ -46,5 +47,11 @@ public class FileFilter{
         filteredList.removeAll(alphabets);
 
         return filteredList;
+    }
+
+    public static double findLength(File file) {
+        List<String> infoTextList = filterText(ReadFile.toList(file),INFO_FILTER);
+        String[] length = infoTextList.get(9).split(",") ;
+        return Double.parseDouble(length[0]);
     }
 }

@@ -21,8 +21,8 @@ public class ProfileFactory {
     private Profile createProfile(File file){
         Profile profile = new Profile();
         profile.setName(file.getName());
+        profile.setLength(FileFilter.findLength(file));
         profile.setHoles(FileFilter.findHoles(file));
-
 
         return profile;
     }

@@ -7,6 +7,7 @@ public class Hole{
     private final double x;
     private final double y;
     private final double size;
+    private int uNr;
 
     protected Hole(String side, double x, double y, double size){
         this.side = side;
@@ -16,7 +17,15 @@ public class Hole{
     }
 
     public Hole(String[] dataLine){
-        this(dataLine[1], Double.parseDouble(dataLine[2].replaceAll(Regex.NOT_DIGIT,"")), Double.parseDouble(dataLine[3]), Double.parseDouble(dataLine[4]) );
+        this(dataLine[1], Double.parseDouble(dataLine[2].replaceAll(Regex.LETTER,"")), Double.parseDouble(dataLine[3]), Double.parseDouble(dataLine[4]) );
+    }
+
+    public Hole(String side,double y,double size, int uNr){
+        this.side = side;
+        this.uNr = uNr;
+        this.y = y;
+        this.size = size;
+        this.x = 0;
     }
 
     private double round(double number){
@@ -50,8 +59,15 @@ public class Hole{
                 ", x=" + x +
                 ", y=" + y +
                 ", size=" + size +
+                ", unr=" + uNr +
+
                 '}';
     }
+
+    public void setUNr(int uNr){
+        this.uNr = uNr;
+    }
+
 
     public String getSide() {
         return side;
@@ -67,5 +83,9 @@ public class Hole{
 
     public double getSize() {
         return size;
+    }
+
+    public int getUNr() {
+        return uNr;
     }
 }
