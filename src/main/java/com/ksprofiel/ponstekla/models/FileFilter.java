@@ -1,53 +1,34 @@
 package com.ksprofiel.ponstekla.models;
 
-import javafx.collections.ObservableList;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.zip.CheckedOutputStream;
 
 public class FileFilter{
     private final static String HOLE_FILTER = "BO";
     private final static String EXTERNAL_CONTOUR_FILTER = "AK";
     private final static String INTERNAL_CONTOUR_FILTER = "IK";
-    private final ObservableList<File> files;
+    private final static String INFO_FILTER = "ST";
 
-    public FileFilter(ObservableList<File> files){
-        this.files = files;
-    }
+    public static List<Hole> findHoles(File file){
 
-    public LinkedList<Hole> calculateDifferentHoles(){
-        LinkedList<Hole> uniqueHoleList = new LinkedList<>();
-        for (File file : files){
+        List<String> holeTextList = filterText(ReadFile.toList(file),HOLE_FILTER);
+        List<Hole> holeList = new LinkedList<>();
 
-            LinkedList<Hole> holes = findHoleUNr(ReadFile.toList(file));
-            addUniques(holes,uniqueHoleList);
+        for (String line : holeTextList) {
 
-        }
-        return uniqueHoleList;
-    }
-
-    private LinkedList<Hole> findHoleUNr(LinkedList<String> text){
-
-        List<String> holeList = filterText(text,HOLE_FILTER);
-        LinkedList<Hole> uniqueHoleList = new LinkedList<>();
-
-        for (String line : holeList) {
             String[] arrayLine = line.split(Regex.WHITESPACE);
-
             Hole hole = new Hole(arrayLine);
-            if(!uniqueHoleList.contains(hole)){
-                uniqueHoleList.add(hole);
-            }
+            holeList.add(hole);
         }
 
-        return uniqueHoleList;
+        return holeList;
     }
 
-    private LinkedList<String> filterText(LinkedList<String> text,String filter){
-        LinkedList<String> filteredList = new LinkedList<>();
+    private static List<String> filterText(List<String> text,String filter){
+        List<String> filteredList = new LinkedList<>();
         boolean add = true;
         for (String line : text){
 
@@ -62,18 +43,15 @@ public class FileFilter{
             }
         }
 
-        ArrayList<String> alphabets = new ArrayList<>(Arrays.asList(filter));
+        List<String> alphabets = new ArrayList<>(Arrays.asList(filter));
         filteredList.removeAll(alphabets);
 
         return filteredList;
     }
 
-    private <T> void addUniques(LinkedList<T> tLinkedList, LinkedList<T> uniqueTLinkedList){
-        for (T t : tLinkedList){
-            if (!uniqueTLinkedList.contains(t)){
-                uniqueTLinkedList.add(t);
-            }
-        }
+    public static double findLength(File file) {
+        List<String> infoTextList = filterText(ReadFile.toList(file),INFO_FILTER);
+        String[] length = infoTextList.get(9).split(",") ;
+        return Double.parseDouble(length[0]);
     }
-
 }
