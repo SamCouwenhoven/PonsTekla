@@ -3,10 +3,7 @@ package com.ksprofiel.ponstekla.controllers;
 import com.ksprofiel.ponstekla.builders.UniqueViewBuilder;
 import com.ksprofiel.ponstekla.factories.PonsFileFactory;
 import com.ksprofiel.ponstekla.factories.ProfileFactory;
-import com.ksprofiel.ponstekla.models.FileFilter;
-import com.ksprofiel.ponstekla.models.Hole;
-import com.ksprofiel.ponstekla.models.Profile;
-import com.ksprofiel.ponstekla.models.WriteFile;
+import com.ksprofiel.ponstekla.models.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -50,8 +47,41 @@ public class UniqueController extends AbstractController{
 
     @FXML
     private void writeFiles(){
+        Set<Hole> holeSet = createHoleSet();
+
+        for (Profile profile:profiles){
+
+            for (Hole hole:profile.getHoles()) {
+                setHoleUNr(hole,holeSet);
+            }
+
+        }
+
+        PonsFileFactory ponsFileFactory = new PonsFileFactory();
+        for (Profile profile : profiles) {
+            createFile(ponsFileFactory,profile);
+        }
+    }
+
+    private void createFile(PonsFileFactory ponsFileFactory, Profile profile){
+        ponsFileFactory.setProfile(profile);
+        String text = ponsFileFactory.createPonsFile();
+        String profileName = profile.getName();
+        WriteFile.write(text,pathTextField.getText() + "/" + profileName.substring(0,profileName.indexOf(".")));
+    }
+
+    private void setHoleUNr(Hole hole, Set<Hole> holeSet){
+        for (Hole uniqueHole:holeSet) {
+            if (hole.equals(uniqueHole)) {
+                hole.setUNr(uniqueHole.getUNr());
+                return;
+            }
+        }
+    }
+
+    private Set<Hole> createHoleSet(){
         ListIterator children = gridPane.getChildren().listIterator();
-        Set<Hole> holeList = new HashSet<>();
+        Set<Hole> holeSet = new HashSet<>();
         Integer number = -1;
         for (ListIterator it = children; it.hasNext(); ) {
             Node node = (Node) it.next();
@@ -68,41 +98,15 @@ public class UniqueController extends AbstractController{
                 int unr = Integer.parseInt( uNrText.getText() );
 
                 Hole uniqueHole = new Hole(side,y,size,unr);
-                holeList.add(uniqueHole);
+                holeSet.add(uniqueHole);
             }
             number++;
         }
-
-        for (Hole hole:holeList){
-            System.out.println(hole);
-        }
-
-        for (Profile profile:profiles){
-
-            for (Hole hole:profile.getHoles()
-                 ) {
-
-                for (Hole uniqueHole:holeList
-                     ) {
-                    if (hole.equals(uniqueHole)) {
-                        hole.setUNr(uniqueHole.getUNr());
-                    }
-                }
-
-            }
-
-        }
-
-        PonsFileFactory ponsFileFactory = new PonsFileFactory();
-        for (Profile profile : profiles) {
-            ponsFileFactory.setProfile(profile);
-            String text = ponsFileFactory.createPonsFile();
-            String profileName = profile.getName();
-            WriteFile.write(text,pathTextField.getText() + "/" + profileName.substring(0,profileName.indexOf(".")));
-        }
+        return holeSet;
     }
 
-    public void selectPath(MouseEvent mouseEvent) {
+    @FXML
+    private void selectPath(MouseEvent mouseEvent) {
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(getStage(mouseEvent));

@@ -1,5 +1,6 @@
 package com.ksprofiel.ponstekla.controllers;
 
+import com.ksprofiel.ponstekla.models.ExtensionFilter;
 import com.ksprofiel.ponstekla.models.ReadFile;
 import com.ksprofiel.ponstekla.models.ViewFile;
 import javafx.collections.FXCollections;
@@ -41,16 +42,22 @@ public class ChooseController extends AbstractController implements Initializabl
 
         FileChooser fileChooser =  new FileChooser();
 
-        FileChooser.ExtensionFilter ncFilter = new FileChooser.ExtensionFilter("NC Files", "*.nc*");
-        FileChooser.ExtensionFilter allFilter = new FileChooser.ExtensionFilter("All Files", "*.*");
-        fileChooser.getExtensionFilters().add(ncFilter);
-        fileChooser.getExtensionFilters().add(allFilter);
-
+        addExtensionFilter(fileChooser);
 
         List<File> chosenFiles = fileChooser.showOpenMultipleDialog(getStage(event));
 
-        fileList.addAll(chosenFiles);
-        updateListView();
+        if (chosenFiles != null) {
+            fileList.addAll(chosenFiles);
+            updateListView();
+        }
+
+    }
+
+    private void addExtensionFilter(FileChooser fileChooser){
+        for (ExtensionFilter filter:ExtensionFilter.values()) {
+            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter(filter.getText(), filter.getExtension());
+            fileChooser.getExtensionFilters().add(extensionFilter);
+        }
     }
 
 
