@@ -13,31 +13,40 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
 import java.util.*;
 
 public class UniqueController extends AbstractController{
 
     public TextField pathTextField;
     @FXML private GridPane gridPane;
-    @FXML private Button submitButton;
     private LinkedList<Profile> profiles;
 
+    /**
+     *
+     * initalizes data used by the controller
+     * @param fileObservableList list of files to use
+     */
     public void initData(ObservableList<File> fileObservableList){
         ProfileFactory profileFactory = new ProfileFactory();
         profiles = profileFactory.createAllProfiles(fileObservableList);
         buildUniqueView();
     }
+
+    /**
+     * build the unique view using UniqueViewBuilder
+     */
     private void buildUniqueView(){
         UniqueViewBuilder uniqueViewBuilder = new UniqueViewBuilder(gridPane);
-        uniqueViewBuilder.setHoleSet(createUniqueHoleList());
+        uniqueViewBuilder.setHoleSet(createHoleSet());
         uniqueViewBuilder.init();
     }
 
-    private Set<Hole> createUniqueHoleList(){
+    /**
+     * creates a set of Holes from all profiles
+     * @return HashSet of Holes
+     */
+    private Set<Hole> createHoleSet(){
         Set<Hole> holeSet = new HashSet<>();
         for (Profile profile:profiles) {
             holeSet.addAll(profile.getHoles());
@@ -45,9 +54,37 @@ public class UniqueController extends AbstractController{
         return holeSet;
     }
 
+    /**
+     * sets uNrs of profile
+     * writes profile to ponsFile using PonsFileFactory
+     */
     @FXML
     private void writeFiles(){
-        Set<Hole> holeSet = createHoleSet();
+        setProfileUNr();
+
+        PonsFileFactory ponsFileFactory = new PonsFileFactory();
+        for (Profile profile : profiles) {
+            createFile(ponsFileFactory,profile);
+        }
+    }
+
+    /**
+     * creates a PonsFile from Profile
+     * @param ponsFileFactory PonsfileFactory used to make PonsFile
+     * @param profile profile to convert to PonsFile
+     */
+    private void createFile(PonsFileFactory ponsFileFactory, Profile profile){
+        ponsFileFactory.setProfile(profile);
+        String text = ponsFileFactory.createPonsFile();
+        String profileName = profile.getName();
+        WriteFile.write(text,pathTextField.getText() + "/" + profileName.substring(0,profileName.indexOf(".")));
+    }
+
+    /**
+     * sets all uNr of profile to the correct uNr
+     */
+    private void setProfileUNr(){
+        Set<Hole> holeSet = createHoleSetWithUNr();
 
         for (Profile profile:profiles){
 
@@ -56,20 +93,13 @@ public class UniqueController extends AbstractController{
             }
 
         }
-
-        PonsFileFactory ponsFileFactory = new PonsFileFactory();
-        for (Profile profile : profiles) {
-            createFile(ponsFileFactory,profile);
-        }
     }
 
-    private void createFile(PonsFileFactory ponsFileFactory, Profile profile){
-        ponsFileFactory.setProfile(profile);
-        String text = ponsFileFactory.createPonsFile();
-        String profileName = profile.getName();
-        WriteFile.write(text,pathTextField.getText() + "/" + profileName.substring(0,profileName.indexOf(".")));
-    }
-
+    /**
+     * Set uNr of Hole to uNr of Set
+     * @param hole
+     * @param holeSet
+     */
     private void setHoleUNr(Hole hole, Set<Hole> holeSet){
         for (Hole uniqueHole:holeSet) {
             if (hole.equals(uniqueHole)) {
@@ -79,7 +109,11 @@ public class UniqueController extends AbstractController{
         }
     }
 
-    private Set<Hole> createHoleSet(){
+    /**
+     * creates holeset of data from uniqueView
+     * @return HoleSet with Unr with data from uniqueView
+     */
+    private Set<Hole> createHoleSetWithUNr(){
         ListIterator children = gridPane.getChildren().listIterator();
         Set<Hole> holeSet = new HashSet<>();
         Integer number = -1;
@@ -105,6 +139,9 @@ public class UniqueController extends AbstractController{
         return holeSet;
     }
 
+    /**
+     *selects directory where files will be created
+     */
     @FXML
     private void selectPath(MouseEvent mouseEvent) {
 

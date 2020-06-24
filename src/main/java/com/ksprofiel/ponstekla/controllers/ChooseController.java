@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-
+/**
+ * Controller for the choose view
+ */
 public class ChooseController extends AbstractController implements Initializable {
 
     @FXML private ListView<File> fileListView;
@@ -37,6 +39,10 @@ public class ChooseController extends AbstractController implements Initializabl
         fileListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
+    /**
+     * Method for adding files to the file list
+     * @param event
+     */
     @FXML
     private void addFiles(ActionEvent event){
 
@@ -53,6 +59,10 @@ public class ChooseController extends AbstractController implements Initializabl
 
     }
 
+    /**
+     * Adding extention filters to the filechooser from ExtentionFilter.values()
+     * @param fileChooser fileChooser to add extensions from ExtentionFilter.values()
+     */
     private void addExtensionFilter(FileChooser fileChooser){
         for (ExtensionFilter filter:ExtensionFilter.values()) {
             FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter(filter.getText(), filter.getExtension());
@@ -60,7 +70,9 @@ public class ChooseController extends AbstractController implements Initializabl
         }
     }
 
-
+    /**
+     * updates the Listview with selected files
+     */
     private void updateListView(){
         fileListView.getItems().clear();
         for (File file : fileList){
@@ -68,6 +80,9 @@ public class ChooseController extends AbstractController implements Initializabl
         }
     }
 
+    /**
+     * shows selected file in the readFileListview
+     */
     @FXML
     private void readFile(){
         File fileToRead = fileListView.getSelectionModel().getSelectedItem();
@@ -76,6 +91,9 @@ public class ChooseController extends AbstractController implements Initializabl
         readFileListView.getItems().addAll( ReadFile.toList(fileToRead) );
     }
 
+    /**
+     * removes selected file(s) in fileList
+     */
     @FXML
     private void removeSelectedFiles(){
         ObservableList<File> filesToRemove = fileListView.getSelectionModel().getSelectedItems();
@@ -83,9 +101,12 @@ public class ChooseController extends AbstractController implements Initializabl
         updateListView();
     }
 
+    /**
+     * loads unique fxml and sets it to the stage
+     */
     @FXML
     private void toNextView(ActionEvent event){
-        Parent uniqueViewParent = loadFXML(ViewFile.TEST);
+        Parent uniqueViewParent = loadFXML(ViewFile.UNIQUE);
 
         Scene uniqueScene = new Scene(uniqueViewParent);
 
