@@ -6,7 +6,10 @@ import javafx.scene.Scene;
 
 
 public class AppController extends AbstractController{
-
+    /**
+     *
+     * @return scene of loadFXML( ViewFile.CHOOSE )
+     */
     public Scene getScene(){
         Parent chooseViewParent = loadFXML(ViewFile.CHOOSE);
 

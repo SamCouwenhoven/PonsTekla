@@ -4,10 +4,6 @@ import java.io.*;
 
 public class WriteFile {
 
-    public static void writeFile(){
-
-    }
-
     public static void write(String text, String path) {
         BufferedWriter bw = null;
         try {
@@ -31,7 +27,7 @@ public class WriteFile {
                 if(bw!=null)
                     bw.close();
             }catch(Exception ex){
-                System.out.println("Error in closing the BufferedWriter"+ex + path);
+                System.out.println("Error in closing the BufferedWriter"+ ex + path);
             }
         }
     }

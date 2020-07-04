@@ -14,6 +14,9 @@ import javafx.scene.layout.GridPane;
 import java.util.LinkedList;
 import java.util.Set;
 
+/**
+ * class to build the Unique View
+ */
 public class UniqueViewBuilder {
     private static int column = 1;
     private static final int SIZE_GRIDPANE = 1;
