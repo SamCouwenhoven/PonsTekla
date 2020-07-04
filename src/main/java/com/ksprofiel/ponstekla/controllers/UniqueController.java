@@ -4,12 +4,16 @@ import com.ksprofiel.ponstekla.builders.UniqueViewBuilder;
 import com.ksprofiel.ponstekla.factories.PonsFileFactory;
 import com.ksprofiel.ponstekla.factories.ProfileFactory;
 import com.ksprofiel.ponstekla.models.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
@@ -18,7 +22,9 @@ import java.util.*;
 
 public class UniqueController extends AbstractController{
 
-    public TextField pathTextField;
+    @FXML private TextField pathTextField;
+    @FXML private CheckBox isKykgat;
+    @FXML private TextField moveXBy;
     @FXML private GridPane gridPane;
     private LinkedList<Profile> profiles;
 
@@ -40,6 +46,15 @@ public class UniqueController extends AbstractController{
         UniqueViewBuilder uniqueViewBuilder = new UniqueViewBuilder(gridPane);
         uniqueViewBuilder.setHoleSet(createHoleSet());
         uniqueViewBuilder.init();
+        moveXBy.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (newValue.matches(Regex.LETTER)) {
+                    moveXBy.setText(newValue.replaceAll(Regex.LETTER, ""));
+                }
+            }
+        });
     }
 
     /**
@@ -61,11 +76,12 @@ public class UniqueController extends AbstractController{
     @FXML
     private void writeFiles(){
         setProfileUNr();
-
         PonsFileFactory ponsFileFactory = new PonsFileFactory();
+        ponsFileFactory.setKykgat(isKykgat.isSelected());
         for (Profile profile : profiles) {
             createFile(ponsFileFactory,profile);
         }
+        moveXBy.setText("0");
     }
 
     /**
@@ -74,10 +90,22 @@ public class UniqueController extends AbstractController{
      * @param profile profile to convert to PonsFile
      */
     private void createFile(PonsFileFactory ponsFileFactory, Profile profile){
+        moveX(profile);
         ponsFileFactory.setProfile(profile);
         String text = ponsFileFactory.createPonsFile();
         String profileName = profile.getName();
         WriteFile.write(text,pathTextField.getText() + "/" + profileName.substring(0,profileName.indexOf(".")));
+    }
+
+    private void moveX(Profile profile){
+        if (!moveXBy.getText().isBlank() && !moveXBy.getText().matches(Regex.NOT_NUMBER)){
+
+            double delta = Double.parseDouble( moveXBy.getText() );
+            profile.setLength(profile.getLength() + (delta * 2));
+            for (Hole hole : profile.getHoles()){
+                hole.shiftX(delta);
+            }
+        }
     }
 
     /**
@@ -97,8 +125,8 @@ public class UniqueController extends AbstractController{
 
     /**
      * Set uNr of Hole to uNr of Set
-     * @param hole
-     * @param holeSet
+     * @param hole  hole without uNr
+     * @param holeSet holeSet of possible holes with uNr
      */
     private void setHoleUNr(Hole hole, Set<Hole> holeSet){
         for (Hole uniqueHole:holeSet) {
@@ -152,4 +180,5 @@ public class UniqueController extends AbstractController{
         }
 
     }
+
 }

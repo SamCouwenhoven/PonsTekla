@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Hole{
     private final String side;
-    private final double x;
+    private double x;
     private final double y;
     private final double size;
     private int uNr;
@@ -87,5 +87,9 @@ public class Hole{
 
     public int getUNr() {
         return uNr;
+    }
+
+    public void shiftX(double delta){
+        x += delta;
     }
 }
